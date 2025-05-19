@@ -45,10 +45,13 @@ public class AlertRESTController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // TODO: add the code for the missing system operations here: 
-    // use the corresponding mapping HTTP request annotation with the parameter: "/byProductAndDate"
-    // and create the method getAlertsByProductAndDate(@RequestParam @NotNull Long productId, @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate availableOnDate)
-    // which call the corresponding findAlertsByProductAndDate method
+    /**
+     * GET request to retrieve alerts for a given product and availability date.
+     *
+     * @param productId the ID of the product
+     * @param availableOnDate the date on which the product becomes available
+     * @return a list of alerts matching the specified product and date
+     */
     @GetMapping("/byProductAndDate")
     public List<Alert> getAlertsByProductAndDate(@RequestParam @NotNull Long productId, @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate availableOnDate) {
         log.trace("getAlertsByProductAndDate");

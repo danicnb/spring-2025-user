@@ -1,7 +1,6 @@
 package edu.uoc.epcsd.user.application.rest;
 
 import edu.uoc.epcsd.user.application.rest.request.CreateDigitalItemRequest;
-import edu.uoc.epcsd.user.application.rest.response.GetProductResponse;
 import edu.uoc.epcsd.user.domain.Alert;
 import edu.uoc.epcsd.user.domain.DigitalItem;
 import edu.uoc.epcsd.user.domain.DigitalItemStatus;
@@ -36,10 +35,13 @@ public class DigitalItemRESTController {
         return digitalItemService.findAllDigitalItem();
     }
 
-    // TODO: add the code for the missing system operations here:
-    // use the corresponding mapping HTTP request annotation with the parameter: "/{digitalItemId}"
-    // and create the method getDigitalItemById(@PathVariable @NotNull Long digitalItemId)
-    // which call the corresponding getDigitalItemById method
+    /**
+     * GET request to retrieve a digital item by its ID.
+     *
+     * @param digitalItemId the ID of the digital item to retrieve
+     * @return the digital item if found, wrapped in a ResponseEntity with status 200 OK;
+     *         or status 404 Not Found if no item exists with the given ID
+     */
     @GetMapping("/{digitalItemId}")
     public ResponseEntity<DigitalItem> getDigitalItemById(@PathVariable @NotNull Long digitalItemId) {
         log.trace("getDigitalItemById");
@@ -48,10 +50,12 @@ public class DigitalItemRESTController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // TODO: add the code for the missing system operations here:
-    // use the corresponding mapping HTTP request annotation with the parameter: "/digitalItemBySession"
-    // and create the method findDigitalItemBySession(@RequestParam @NotNull Long digitalSessionId)
-    // which call the corresponding findDigitalItemBySession method
+    /**
+     * GET request to retrieve all digital items associated with a specific digital session.
+     *
+     * @param digitalSessionId the ID of the digital session
+     * @return a list of digital items linked to the specified session
+     */
     @GetMapping("/digitalItemBySession")
     @ResponseStatus(HttpStatus.OK)
     public List<DigitalItem> findDigitalItemBySession(@RequestParam @NotNull Long digitalSessionId) {
@@ -60,11 +64,13 @@ public class DigitalItemRESTController {
         return digitalItemService.findDigitalItemBySession(digitalSessionId);
     }
 
-    // TODO: add the code for the missing system operations here:
-    // use the corresponding mapping HTTP request annotation with the parameter: "/addItem"
-    // and create the method addDigitalItem(@RequestBody @Valid CreateDigitalItemRequest createDigitalItemRequest)
-    // which call the corresponding addDigitalItemm method
-
+    /**
+     * POST request to add a new digital item to an existing digital session.
+     *
+     * @param createDigitalItemRequest the request body containing the digital item's details
+     * @return ResponseEntity with the ID of the newly created digital item and status 201 Created;
+     *         or status 400 Bad Request if the specified digital session does not exist
+     */
     @PostMapping("/addItem")
     public ResponseEntity<Long> addDigitalItem(@RequestBody @Valid CreateDigitalItemRequest createDigitalItemRequest) {
         log.trace("addDigitalItem");
@@ -93,10 +99,14 @@ public class DigitalItemRESTController {
         }
     }
 
-    // TODO: add the code for the missing system operations here:
-    // use the corresponding mapping HTTP request annotation with the parameter: "/updateItem/{digitalItemId}"
-    // and create the method updateDigitalItem(@PathVariable @NotNull Long digitalItemId, @RequestBody @Valid CreateDigitalItemRequest updateDigitalItemRequest)
-    // which call the corresponding updateDigitalItem method
+    /**
+     * PATCH request to update an existing digital item by its ID.
+     *
+     * @param digitalItemId the ID of the digital item to be updated
+     * @param updateDigitalItemRequest the request body containing the updated digital item details
+     * @return ResponseEntity with the ID of the updated digital item and status 201 Created;
+     *         or status 400 Bad Request if the specified item does not exist
+     */
     @PatchMapping("/updateItem/{digitalItemId}")
     public ResponseEntity<Long> updateDigitalItem(@PathVariable @NotNull Long digitalItemId, @RequestBody @Valid CreateDigitalItemRequest updateDigitalItemRequest) {
         log.trace("updateDigitalItem");
@@ -122,10 +132,12 @@ public class DigitalItemRESTController {
         }
     }
 
-    // TODO: add the code for the missing system operations here:
-    // use the corresponding mapping HTTP request annotation with the parameter: "/reviewDigitalItem/{digitalItemId}"
-    // and create the method setDigitalItemForReview(@PathVariable @NotNull Long digitalItemId)
-    // which call the corresponding setDigitalItemForReview method
+    /**
+     * PATCH request to mark a digital item as pending review by its ID.
+     *
+     * @param digitalItemId the ID of the digital item to be marked for review
+     * @throws ResponseStatusException with status 400 Bad Request if the specified item does not exist
+     */
     @PatchMapping("/reviewDigitalItem/{digitalItemId}")
     @ResponseStatus(HttpStatus.OK)
     public void setDigitalItemForReview(@PathVariable @NotNull Long digitalItemId) {
@@ -141,10 +153,12 @@ public class DigitalItemRESTController {
         }
     }
 
-    // TODO: add the code for the missing system operations here:
-    // use the corresponding mapping HTTP request annotation with the parameter: "/approveDigitalItem/{digitalItemId}"
-    // and create the method approvePendingDigitalItem(@PathVariable @NotNull Long digitalItemId)
-    // which call the corresponding approvePendingDigitalItem method
+    /**
+     * PATCH request to approve a pending digital item by its ID.
+     *
+     * @param digitalItemId the ID of the digital item to be approved
+     * @throws IllegalArgumentException if the specified digital item does not exist
+     */
     @PatchMapping("/approveDigitalItem/{digitalItemId}")
     @ResponseStatus(HttpStatus.OK)
     public void approvePendingDigitalItem(@PathVariable @NotNull Long digitalItemId) {
@@ -160,10 +174,12 @@ public class DigitalItemRESTController {
         }
     }
 
-    // TODO: add the code for the missing system operations here:
-    // use the corresponding mapping HTTP request annotation with the parameter: "/rejectDigitalItem/{digitalItemId}"
-    // and create the method rejectPendingDigitalItem(@PathVariable @NotNull Long digitalItemId)
-    // which call the corresponding rejectPendingDigitalItem method
+    /**
+     * PATCH request to reject a pending digital item by its ID.
+     *
+     * @param digitalItemId the ID of the digital item to be rejected
+     * @throws IllegalArgumentException if the specified digital item does not exist
+     */
     @PatchMapping("/rejectDigitalItem/{digitalItemId}")
     @ResponseStatus(HttpStatus.OK)
     public void rejectPendingDigitalItem(@PathVariable @NotNull Long digitalItemId) {
@@ -179,10 +195,13 @@ public class DigitalItemRESTController {
         }
     }
 
-    // TODO: add the code for the missing system operations here: 
-    // use the corresponding mapping HTTP request annotation with the parameter: "/dropItem/{digitalItemId}"
-    // and create the method dropDigitalItem(@PathVariable @NotNull Long digitalItemId)
-    // which call the corresponding dropDigitalItem method
+    /**
+     * DELETE request to remove a digital item by its ID.
+     *
+     * @param digitalItemId the ID of the digital item to be deleted
+     * @return ResponseEntity with status 204 No Content if successfully deleted;
+     *         or status 400 Bad Request if the specified item does not exist
+     */
     @DeleteMapping("/dropItem/{digitalItemId}")
     public ResponseEntity<Void> dropDigitalItem(@PathVariable @NotNull Long digitalItemId) {
         log.trace("dropDigitalItem");

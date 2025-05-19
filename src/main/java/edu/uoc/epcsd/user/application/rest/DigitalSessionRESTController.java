@@ -2,7 +2,6 @@ package edu.uoc.epcsd.user.application.rest;
 
 import edu.uoc.epcsd.user.application.rest.request.CreateDigitalSessionRequest;
 import edu.uoc.epcsd.user.domain.DigitalItem;
-import edu.uoc.epcsd.user.domain.DigitalItemStatus;
 import edu.uoc.epcsd.user.domain.DigitalSession;
 import edu.uoc.epcsd.user.domain.service.DigitalSessionService;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +33,14 @@ public class DigitalSessionRESTController {
 
         return digitalSessionService.findAllDigitalSession();
     }
-    
-    // TODO: add the code for the missing system operations here: 
-    // use the corresponding mapping HTTP request annotation with the parameter: "/{digitalSessionId}"
-    // and create the method getDigitalSessionById(@PathVariable @NotNull Long digitalSessionId)
-    // which call the corresponding getDigitalSessionById method
+
+    /**
+     * GET request to retrieve a digital session by its ID.
+     *
+     * @param digitalSessionId the ID of the digital session to retrieve
+     * @return the digital session if found, wrapped in a ResponseEntity with status 200 OK;
+     *         or status 404 Not Found if no session exists with the given ID
+     */
     @GetMapping("/{digitalSessionId}")
     public ResponseEntity<DigitalSession> getDigitalSessionById(@PathVariable @NotNull Long digitalSessionId) {
         log.trace("getDigitalSessionById");
@@ -47,10 +49,12 @@ public class DigitalSessionRESTController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // TODO: add the code for the missing system operations here: 
-    // use the corresponding mapping HTTP request annotation with the parameter: "/digitalByUser"
-    // and create the method findDigitalSessionByUser(@RequestParam @NotNull Long userId)
-    // which call the corresponding findDigitalSessionByUser method
+    /**
+     * GET request to retrieve all digital sessions associated with a specific user ID.
+     *
+     * @param userId the ID of the user whose digital sessions are to be retrieved
+     * @return a list of digital sessions linked to the specified user
+     */
     @GetMapping("/digitalByUser")
     public List<DigitalSession> findDigitalSessionByUser(@RequestParam @NotNull Long userId) {
         log.trace("findDigitalSessionByUser");
@@ -58,10 +62,13 @@ public class DigitalSessionRESTController {
         return digitalSessionService.findDigitalSessionByUser(userId);
     }
 
-    // TODO: add the code for the missing system operations here: 
-    // use the corresponding mapping HTTP request annotation with the parameter: "/createDigital"
-    // and create the method createDigitalSession(@RequestBody @Valid CreateDigitalSessionRequest createDigitalSessionRequest)
-    // which call the corresponding createDigitalSession method
+    /**
+     * POST request to create a new digital session for a specific user.
+     *
+     * @param createDigitalSessionRequest the request body containing details of the digital session to be created
+     * @return the ID of the newly created digital session wrapped in a ResponseEntity with status 201 Created;
+     *         or status 400 Bad Request if the specified user does not exist
+     */
     @PostMapping("/createDigital")
     public ResponseEntity<Long> createDigitalSession(@RequestBody @Valid CreateDigitalSessionRequest createDigitalSessionRequest) {
         log.trace("createDigitalSession");
@@ -88,10 +95,14 @@ public class DigitalSessionRESTController {
         }
     }
 
-    // TODO: add the code for the missing system operations here: 
-    // use the corresponding mapping HTTP request annotation with the parameter: "/updateDigital/{digitalSessionId}"
-    // and create the method updateDigitalSession(@PathVariable @NotNull Long digitalSessionId, @RequestBody @Valid CreateDigitalSessionRequest updateDigitalSessionRequest)
-    // which call the corresponding updateDigitalSession method
+    /**
+     * PATCH request to update an existing digital session by its ID.
+     *
+     * @param digitalSessionId the ID of the digital session to be updated
+     * @param updateDigitalSessionRequest the request body containing the updated digital session details
+     * @return ResponseEntity with the ID of the updated digital session and status 201 Created;
+     *         or status 400 Bad Request if the specified session does not exist
+     */
     @PatchMapping("/updateDigital/{digitalSessionId}")
     public ResponseEntity<Long> updateDigitalSession(@PathVariable @NotNull Long digitalSessionId, @RequestBody @Valid CreateDigitalSessionRequest updateDigitalSessionRequest) {
         log.trace("updateDigitalSession");
@@ -117,10 +128,13 @@ public class DigitalSessionRESTController {
         }
     }
 
-    // TODO: add the code for the missing system operations here: 
-    // use the corresponding mapping HTTP request annotation with the parameter: "/removeDigital/{digitalSessionId}"
-    // and create the method removeDigitalSession(@PathVariable @NotNull Long digitalSessionId
-    // which call the corresponding removeDigitalSession method
+    /**
+     * DELETE request to remove a digital session by its ID.
+     *
+     * @param digitalSessionId the ID of the digital session to be removed
+     * @return ResponseEntity with status 204 No Content if successfully removed;
+     *         or status 400 Bad Request if the specified session does not exist
+     */
     @DeleteMapping("/removeDigital/{digitalSessionId}")
     public ResponseEntity<Long> removeDigitalSession(@PathVariable @NotNull Long digitalSessionId) {
         log.trace("removeDigitalSession");
